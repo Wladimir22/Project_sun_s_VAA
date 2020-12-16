@@ -84,7 +84,8 @@ class Planet(InfoObject):
         dx, dy = self.x - old_x, self.y - old_y
         self.canvas.move(self.canvas_image, dx, dy)
         return 
-    
+
+#Парсим информцию о планетах   
 
 planets = [
     {"name": 'Земля', "image": 'earth.png', "orbit": Orbit(200, 0.017, 350, 300, 0, 1),
@@ -107,20 +108,15 @@ def update_selection(event):
     selected_planet = None
 
 def update():
-    global root, planets, orbit_time, selected_planet_halo
+    global root, planets, orbit_time
     orbit_time += 1 / 60
     for p in planets:
         p.move()
     if selected_planet is not None:
         r = selected_planet.radius
         x, y = selected_planet.x, selected_planet.y
-        if selected_planet_halo is not None:
-            canvas.delete(selected_planet_halo)
-        selected_planet_halo = canvas.create_oval(x - r, y - r, x + r, y + r, outline = "white", width = 2)
     else:
-        if selected_planet_halo:
-            canvas.delete(selected_planet_halo)
-            selected_planet_halo = None
+        pass
     root.after(int(1000/60), update)
 
 if __name__ == '__main__':
@@ -143,7 +139,6 @@ if __name__ == '__main__':
     #Конвертируем и расставляем планеты
     planets = [Planet(p) for p in planets]
     selected_planet = None
-    selected_planet_halo = None
     for p in planets:
         p.draw_on_canvas(canvas)
         print(p.x, p.y)
