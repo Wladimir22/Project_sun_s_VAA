@@ -108,7 +108,8 @@ class Planet(InfoObject):
 planets = [
     {"name": 'Земля', "image": 'earth.png', "image_big": "earth_big.png", "orbit": Orbit(200, 0.017, 350, 300, 0, 1),
     "orbit_excenter": 0.017, "orbit_year": "1 год", "orbit_speed": 29.783, "orbit_size": 0.98329134,
-    "mass_mantissa": 5.9726, "mass_exp": 24, "volume_mantissa": 10.8321, "volume_exp": 11, "radius": 6371, "area": "5,10072⋅10^8",
+    "mass_mantissa": 5.9726, "mass_exp": 24, "volume_mantissa": 10.8321, "volume_exp": 11, "radius": 6371,
+    "area": "5,10072⋅10^8",
     "tilt": 23.44, "space_speed": (7.91, 11.186), "sidereal_period": (23, 56, 4), "temp": (184, 287.2, 329.9),
     "atmo": {"Азот": 78.08, "Кислород": 20.95, "Водяной пар": 1, "Аргон": 0.93, "Углекислый газ": 0.04}
     }
