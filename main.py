@@ -1,5 +1,6 @@
 import tkinter as tk
 import math
+import json
 
 ORBIT_EARTH_SPEED = math.pi / 20
 orbit_time = 0.0
@@ -103,17 +104,12 @@ class Planet(InfoObject):
         self.canvas.move(self.canvas_image, dx, dy)
         return 
 
-#Парсим информцию о планетах   
+#Парсим информцию о планетах
+def parse_json(name):
+    with open("info/%s.json" % name, "r", encoding = 'utf-8') as read_file:
+        return json.load(read_file)
 
-planets = [
-    {"name": 'Земля', "image": 'earth.png', "image_big": "earth_big.png", "orbit": Orbit(200, 0.017, 350, 300, 0, 1),
-    "orbit_excenter": 0.017, "orbit_year": "1 год", "orbit_speed": 29.783, "orbit_size": 0.98329134,
-    "mass_mantissa": 5.9726, "mass_exp": 24, "volume_mantissa": 10.8321, "volume_exp": 11, "radius": 6371,
-    "area": "5,10072⋅10^8",
-    "tilt": 23.44, "space_speed": (7.91, 11.186), "sidereal_period": (23, 56, 4), "temp": (184, 287.2, 329.9),
-    "atmo": {"Азот": 78.08, "Кислород": 20.95, "Водяной пар": 1, "Аргон": 0.93, "Углекислый газ": 0.04}
-    }
-]
+planets = [parse_json("earth")]
 
 def update_info_frame(reset = False):
     global info_frame, selected_planet, info_image, info_text
@@ -185,7 +181,11 @@ if __name__ == '__main__':
     bg = ImageObject('bg.png')
     bg.draw_on_canvas(canvas)
     #Конвертируем и расставляем планеты
-    planets = [Planet(p) for p in planets]
+    planets_done = []
+    for p in planets:
+        p['orbit'] = Orbit(*p['orbit'])
+        planets_done.append(Planet(p))
+    planets = planets_done
     selected_planet = None
     for p in planets:
         p.draw_on_canvas(canvas)
