@@ -55,10 +55,28 @@ class InfoObject(ImageObject):
         self.name = info['name']
         self.info['type'] = "неизвестно"
         self.image = load_image(info['image'])
+        self.image_big = load_image(info['image_big'])
         self.x, self.y = 0, 0
         self.anchor = tk.CENTER
         self.canvas = None
         self.radius = self.image.width() / 2
+        self.convert_exps()
+    
+    def convert_exps(self):
+        for key in self.info:
+            if key[-4:] == "_exp":
+                s = ""
+                n = self.info[key]
+                while n > 0:
+                    d = n % 10
+                    if d == 1:
+                        s += '\u00B9'
+                    elif d == 2 or d == 3:
+                        s += chr(0xB0 + d)
+                    else:
+                        s += chr(0x2070 + d)
+                    n //= 10
+                self.info[key] = s
     
     def if_clicked(self, event):
         mx, my = event.x, event.y #Позиция мыши
@@ -88,7 +106,7 @@ class Planet(InfoObject):
 #Парсим информцию о планетах   
 
 planets = [
-    {"name": 'Земля', "image": 'earth.png', "orbit": Orbit(200, 0.017, 350, 300, 0, 1),
+    {"name": 'Земля', "image": 'earth.png', "image_big": "earth_big.png", "orbit": Orbit(200, 0.017, 350, 300, 0, 1),
     "orbit_excenter": 0.017, "orbit_year": "1 год", "orbit_speed": 29.783, "orbit_perihelion": 0.98329134, "orbit_aphelion": 1.01671388,
     "mass_mantissa": 5.9726, "mass_exp": 24, "volume_mantissa": 10.8321, "volume_exp": 11, "radius": 6371, "area": "5,10072⋅10^8",
     "tilt": 23.44, "space_speed": (7.91, 11.186), "sidereal_period": (23, 56, 4), "temp": (184, 287.2, 329.9),
@@ -96,15 +114,42 @@ planets = [
     }
 ]
 
-def update_info_frame():
-    pass #TODO
+def update_info_frame(reset = False):
+    global info_frame, selected_planet, info_image, info_text
+    if reset:
+        if info_image is not None:
+            info_image.destroy()
+        if info_text is not None:
+            info_text.destroy()
+        info_image = tk.Label(info_frame, text = "Нажмите на планету, чтобы узнать о ней побольше", 
+            width = 196, wraplength = 194, bg = 'white')
+        info_image.pack(side = "top", fill = "both")
+    else:
+        info_image.destroy()
+        info_image = tk.Label(info_frame, image = selected_planet.image_big, width = 196)
+        info_text = """\
+{name}
+Тип: {type}
+
+Эксцентристет орбиты: {orbit_excenter}
+Время оборота: {orbit_year}
+Орбитальная скорость: {orbit_speed} км/с
+
+Масса: {mass_mantissa} · 10{mass_exp} кг
+""".format(**selected_planet.info)
+        info_text = tk.Label(info_frame, text = info_text, wraplength = 194, bg = 'white')
+        info_image.pack(side = "top", fill = "both")
+        info_text.pack(side = "top", fill = "both")
+
 
 def update_selection(event):
     global planets, selected_planet
     for p in planets:
         if p.if_clicked(event):
             selected_planet = p
+            update_info_frame()
             return
+    update_info_frame(True)
     selected_planet = None
 
 def update():
@@ -128,6 +173,8 @@ if __name__ == '__main__':
     canvas_frame.pack(side = 'right')
     info_frame = tk.Frame(root, borderwidth=1, bg = "white", width = 200)
     info_frame.pack(fill="both", expand=True)
+    info_image, info_text = None, None
+    update_info_frame(True)
     canvas_frame.pack(side = 'left')
     #Создаём сам Canvas
     canvas = tk.Canvas(canvas_frame, width = ROOT_W - 200, height = ROOT_H)
