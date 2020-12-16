@@ -1,0 +1,415 @@
+% TeX лр6
+% Автор: Балакин В.В.
+% Версия от: последнего изменения декабря 2020 года.
+% Сборка документа из командной строки:
+\documentclass[a4paper,14pt]{extarticle}
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage[english,russian]{babel}
+
+% Пакет отвечающий за рисование графиков в нутри TeX файла.
+% https://ru.sharelatex.com/blog/2013/08/27/tikz-series-pt1.html
+% https://ru.sharelatex.com/learn/TikZ_package
+% http://tex.stackexchange.com/questions/300945/how-to-draw-this-picture-with-latex-tikz-pgf
+% объявляем новую команду для переноса строки внутри ячейки таблицы
+\newcommand{\specialcell}[2][c]{%
+  \begin{tabular}[#1]{@{}c@{}}#2\end{tabular}}
+\usepackage{tikz}
+
+\usepackage{setspace}
+\singlespacing % одинарный интервал
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{mathtext}
+%\usepackage{graphicx}
+\usepackage{float}
+\usepackage[left=3cm, right=1.5cm, top=2cm, bottom=2cm]{geometry}
+\usepackage{icomma} % "Умная" запятая: 
+\usepackage{indentfirst} % Красная строка.
+\usepackage{minted} % Пакет отвечающий за листинги.
+\renewcommand\listingscaption{Листин}
+
+\usepackage{hyperref}
+\usepackage{verbatim}
+\usepackage{minted}
+\renewcommand{\thesection}{\arabic{section}}
+
+\begin{document}
+\begin{titlepage}
+  \begin{center}
+    \MakeUppercase{Министерство науки и высшего образования Российской Федерации} \\
+    \MakeUppercase{ФГБОУ ВО Алтайский госудаственный университет}
+    \vspace{0.25cm}
+    
+    Институт цифровых технологий электроники и физики
+    
+    Кафедра вычислительной техники и электроники
+    \vfill
+    {\LARGE Лабораторная работа №6 }\\[5mm]
+    \textsc{(разработка графической программы, моделирующую солнечную систему по предмету языки программирования высокого уровня)}
+  \bigskip
+\end{center}
+\vfill
+\newlength{\ML}
+\settowidth{\ML}{«\underline{\hspace{0.7cm}}» \underline{\hspace{2cm}}}
+\hfill\begin{minipage}{0.4\textwidth}
+  Выполнили студенты 2-го курса, 595 группы:\\
+  \underline{\hspace{\ML}} В.\,В.\,Балакин\,(лидер)\\
+  \underline{\hspace{\ML}} А.\,В.\,Осипов\,(кодировщик)\\
+  \underline{\hspace{\ML}} А.\,А.\,Прудковский\,(тестировщик)\\
+\end{minipage}
+\bigskip
+
+\hfill\begin{minipage}{0.4\textwidth}
+  Проверил\\
+  \underline{\hspace{\ML}} И.\,А.~Шмаков\\
+  «\underline{\hspace{0.7cm}}» \underline{\hspace{2cm}} \the\year~г.
+\end{minipage}%
+\vfill
+
+\begin{center}
+  Барнаул, \the\year~г.
+\end{center}
+\end{titlepage}
+
+%*******************************************
+%*****************end_Title*****************
+%*******************************************
+   \tableofcontents
+   \newpage
+ %**************end 2 List******************************
+\section{Теоретический блок}
+\subsection{Теория по Python 3}
+Python – это высокоуровневый, динамичный, объектно-ориентированный язык программирования, направленный на повышение производительности программиста и читаемости кода. Разработчиком кода является Гвидо ван Россум. Python был разработан в 1991 году. При создании Python, автор вдохновлялся такими языками программирования как ABC, Haskell, Java, Lisp, Icon и Perl. Python является высокоуровневым, кроссплатформенным, но в то же время минималистичным языком. Одним из его основных преимуществ является отсутствие скобок и точек с запятой. Вместо этого Python использует отступы. Сегодня существует две основные ветви языка: Python 2.7 и Python 3.x.
+
+Язык программирования Python поддерживает несколько стилей программирования. Он не принуждает разработчика придерживаться определенной парадигмы. Python поддерживает объектно-ориентированное и процедурное программирование. Существует и ограниченная поддержка функционального программирования.
+Python не требует явного объявления переменных, является регистро-зависим (переменная var не эквивалентна переменной Var или VAR — это три разные переменные) объектно-ориентированным языком.
+Для объявления функции служит ключевое слово «def». Аргументы функции задаются в скобках после названия функции. Можно задавать необязательные аргументы, присваивая им значение по умолчанию. Функции могут возвращать кортежи, в таком случае надо писать возвращаемые значения через запятую. Ключевое слово «lambda» служит для объявления элементарных функций .
+
+
+В Python много встроенных библиотек. Для преобразования структуры, например, можно использовать стандартную библиотеку «pickle».
+
+Преимущества Python
+Скорость выполнения программ написанных на Python очень высока. Это связанно с тем, что основные библиотеки Python написаны на C++ и выполнение задач занимает меньше времени, чем на других языках высокого уровня.
+В связи с этим есть возможность писать свои собственные модули для Python на C или C++. В стандартныx библиотеках Python можно найти средства для работы с электронной почтой, протоколами Интернета, FTP, HTTP, базами данных, и пр.
+Скрипты, написанные при помощи Python выполняются на большинстве современных ОС. Такая переносимость обеспечивает Python применение в самых различных областях.
+Python подходит для любых решений в области программирования, будь то офисные программы, вэб-приложения, GUI-приложения и т.д.
+Над разработкой Python трудились тысячи энтузиастов со всего мира. Поддержкой современных технологий в стандартных библиотеках мы можем быть обязаны именно тому, что Python был открыт для всех желающих. ~\cite{justwritepython}.
+
+\subsection{Теория по tinker}
+Tkinter – это графическая библиотека на основе Tk, которая входит в стандартную библиотеку Python. Tk является библиотекой базовых элементов графического интерфейса для языка Tcl. Tkinter реализован как оболочка Python для Tcl интерпретатора, встроенного в интерпретатор Python. Существует и несколько других популярных графических инструментов для Python. Наиболее популярными являются wxPython, PyQt5 и PyGTK.~\cite{tinker}.
+
+\subsection{Теория по Git}
+
+Git (произносится «гит») — распределённая система управления версиями. Проект был создан Линусом Торвальдсом для управления разработкой ядра Linux, первая версия выпущена 7 апреля 2005 года. На сегодняшний день его поддерживает Джунио Хамано.
+
+Среди проектов, использующих Git — ядро Linux, Swift, Android, Drupal, Cairo, GNU Core Utilities, Mesa, Wine, Chromium, Compiz Fusion, FlightGear, jQuery, PHP, NASM, MediaWiki, DokuWiki, Qt, ряд дистрибутивов Linux.
+
+Система спроектирована как набор программ, специально разработанных с учётом их использования в сценариях. Это позволяет удобно создавать специализированные системы контроля версий на базе Git или пользовательские интерфейсы. Например, Cogito является именно таким примером оболочки к репозиториям Git, а StGit использует Git для управления коллекцией исправлений (патчей).
+
+Git поддерживает быстрое разделение и слияние версий, включает инструменты для визуализации и навигации по нелинейной истории разработки. Как и Darcs, BitKeeper, Mercurial, Bazaar и Monotone[en], Git предоставляет каждому разработчику локальную копию всей истории разработки, изменения копируются из одного репозитория в другой.
+
+Удалённый доступ к репозиториям Git обеспечивается git-демоном, SSH- или HTTP-сервером. TCP-сервис git-daemon входит в дистрибутив Git и является наряду с SSH наиболее распространённым и надёжным методом доступа. Метод доступа по HTTP, несмотря на ряд ограничений, очень популярен в контролируемых сетях, потому что позволяет использовать существующие конфигурации сетевых фильтров.~\cite{gitik}.
+
+%********************************************
+
+\newpage\section{Постановка задачи}  
+На групповом задании была поставлена задача реализовать программу для моделирования солнечной системы. Моделирование Солнечной Системы заключается в реализации движения планет (окружностей), заданного определенной формулой.Изображения планет берутся из одной папки.
+Помимо движения объектов необходимо реализовать информационное сообщение при нажатии на какую-либо планету/солнце текст информационного сообщения должен содержать необходимую каждому человеку информацию о планете, например: $^{\ref{table:questions}}$
+%талица о сол. сист.
+\begin{enumerate}
+
+ \item ${mass_{mantissa}}= {5.97}$
+ \item ${area, km^2}={5.1*10^8}$
+ \item ${sace_{speed},km/c^2}={7.91}$
+  \item $gravity, m/c^2={9.8}$
+  \item  temp,${{^\circ} C}$= -89~--- 56 
+\item и другие
+\end{enumerate}
+Информация о планетах задана в программе. Движение планет происходит по средствам расчета текущего положения в каждый момент времени при помощи полу-ширины и полу-высоты. Изображение планеты помещается на текущие координаты планеты. Помимо изображения, к текущим координатам планеты привязана панель с информацией о планете, появляющаяся после взаимодействия с планетой (клика).
+
+%************************
+
+%************************
+\newpage\section{тестирование программы}  
+
+%************************
+\addcontentsline{toc}{section}{Выводы по работе}
+%*
+
+
+\newpage\section*{Выводы по работе}
+В результате лабораторной работы №6 были: 
+\begin{enumerate}
+ \item Изучены возможности модуля tinker
+ \item Улучшены навыки работы с объектами
+ \item Улучшены навыки поиска однотипной информации
+  \item Улучшены навыки поиска однотипной информации
+ \item Освоены основы командной работы
+ \item Была написана работающая программа на языке программирования Python 3
+ \item Была протестирована и улучшена программа
+  \item Оформлен отчет по проделанной работе в Latex.
+\end{enumerate}
+
+%************************
+\newpage\addcontentsline{toc}{section}{Список литературы}
+\renewcommand\bibname{Список литературы}
+\begin{thebibliography}{99}
+\bibitem{justwritepython} \href{https://habr.com/ru/post/31180/}{Что то о пайтоне}
+\bibitem{tinker} \href{https://python-scripts.com/tkinter-introduction}{Python/tinker}
+\bibitem{gitik} \href{https://github.com/features}{Github}
+
+\end{thebibliography}
+
+
+%************************
+\addcontentsline{toc}{section}{Приложение 1}
+%*
+\newpage\section*{Приложение 1} 
+\begin{verbatim}
+import tkinter as tk
+import math
+
+ORBIT_EARTH_SPEED = math.pi / 20
+orbit_time = 0.0
+def load_image(name):
+    """Загрузить изображение в память из
+    папки img (png или gif)"""
+    try:
+        image = tk.PhotoImage(file = "img/%s" % name)
+        return image
+    except Exception as e:
+        print('Ошибка загрузки изображения 
+        {0}:\n{1}'.format(name, e))
+        exit(-1)
+#Размеры экрана
+ROOT_W = 800
+ROOT_H = 600
+
+class Orbit():
+    """Класс для орбиты планет"""
+    def __init__(self, hw, e, x, y, td, speed):
+        self.hw = hw #Полуширина орбиты
+        self.e = e #Эксцентристет орбиты
+        #Полувысота орбиты
+        self.hh = math.sqrt(hw * hw * (1 - e * e)) 
+        #Центр орбиты
+        self.x = x
+        self.y = y
+        self.td = td #Начальное отклонение
+        self.speed = speed #Коэффициент скорости
+    
+    def get_current_position(self):
+        """Получить текущую позицию на орбите"""
+        t = self.td + orbit_time * ORBIT_EARTH_SPEED / self.speed
+        x = self.x + self.hw * math.cos(t)
+        y = self.y + self.hh * math.sin(t)
+        return x, y
+    
+    def get_oval_params(self):
+        """Получить параметры для рисования
+        овала орбиты в Tkinter"""
+        return self.x - self.hw, self.y - self.hh, self.x + 
+        self.hw, self.y + self.hh
+
+class ImageObject():
+    """Класс для отображемых объектов"""
+    def __init__(self, img_name, x = 0, y = 0, anchor = tk.NW):
+        self.image = load_image(img_name)
+        self.x, self.y = x, y
+        self.anchor = anchor
+    
+    def draw_on_canvas(self, canvas):
+        self.canvas_image = canvas.create_image(self.x, self.y, 
+        anchor = self.anchor, image = self.image)
+
+class InfoObject(ImageObject):
+    """Класс для кликабельных объектов Солнечной
+    системы информации о них"""
+    def __init__(self, info):
+        self.info = info #Информация об объекте
+        self.info['type'] = "неизвестно"
+        self.image = load_image(info['image'])
+        self.x, self.y = 0, 0
+        self.anchor = tk.CENTER
+        self.canvas = None
+
+    def draw_on_canvas(self, canvas):
+        self.canvas_image = canvas.create_image(self.x, self.y,
+        anchor = self.anchor, image = self.image)
+        self.canvas = canvas
+
+class Planet(InfoObject):
+    """Класс для планет и информации о них"""
+    def __init__(self, info):
+        super().__init__(info)
+        self.orbit = info['orbit']
+        self.info['type'] = "планета"
+        #Загрузка изображения планеты
+        self.x, self.y = self.orbit.get_current_position()
+    
+    def move(self):
+        old_x, old_y = self.x, self.y
+        self.x, self.y = self.orbit.get_current_position()
+        self.canvas.move(self.canvas_image, self.x - old_x,
+        self.y - old_y)
+
+planets = [
+    {"name": 'Земля', "image": 'earth.png', "orbit":
+    Orbit(200, 0.017, 350, 300, 0, 1),
+    "orbit_excenter": 0.017, "orbit_year": "1 год", "orbit_speed":
+    29.783, "orbit_perihelion": 0.98329134, "orbit_aphelion":
+    1.01671388,
+    "mass_mantissa": 5.9726, "mass_exp": 24, "volume_mantissa":
+    10.8321, "volume_exp": 11, "radius": 6371, "area":
+    "5,10072⋅10^8",  "tilt": 23.44, "space_speed":
+    (7.91, 11.186), "sidereal_period": (23, 56, 4),
+    "temp": (184, 287.2, 329.9),
+    "atmo": {"Азот": 78.08, "Кислород": 20.95, "Водяной пар": 1,
+    "Аргон": 0.93, "Углекислый газ": 0.04}
+    }
+]
+
+def update():
+    global root, planets, orbit_time
+    orbit_time += 1 / 60
+    for p in planets:
+        p.move()
+    root.after(int(1000/60), update)
+
+if __name__ == '__main__':
+    root = tk.Tk()
+    root.geometry("%dx%d+%d+%d" % (ROOT_W, ROOT_H, 100, 100))
+    #Создаём панель с информацией и панель для canvas
+    canvas_frame = tk.Frame(root, borderwidth=1)
+    canvas_frame.pack(fill="both", expand=True)
+    canvas_frame.pack(side = 'right')
+    info_frame = tk.Frame(root, borderwidth=1, bg = "white")
+    info_frame.pack(fill="both", expand=True)
+    canvas_frame.pack(side = 'left')
+    #Создаём сам Canvas
+    canvas = tk.Canvas(canvas_frame, width = ROOT_W - 150, 
+    height = ROOT_H)
+    canvas.pack(side = 'left')
+    test_label = tk.Label(info_frame, text = "тест",
+    width = 150)
+    test_label.pack()
+    #Рисуем фон
+    bg = ImageObject('bg.png')
+    bg.draw_on_canvas(canvas)
+    #Конвертируем и расставляем планеты
+    planets = [Planet(p) for p in planets]
+    for p in planets:
+        p.draw_on_canvas(canvas)
+        print(p.x, p.y)
+    root.after(int(1000/60), update)
+    root.mainloop()
+\end{verbatim}
+
+%************************
+
+
+
+%************************
+\addcontentsline{toc}{section}{Приложение 2}
+%**
+\newpage\section*{Приложение 2}  
+\subsection{Информация о планетах}
+\begin{tabular}{|p{2.5cm}|p{5cm}|p{6 cm}|} \hline
+
+\label{table:questions}
+name & \specialcell{${ image_{obj}}$} & orbit   \\
+\hline
+Солнце & None & 0  \\
+Меркурий & None & 0  \\
+Венера & None & 0  \\
+Земля & None & 0 \\
+Марс & None & 0 \\
+Юпитер & None & 0  \\
+Сатурн & None & 0\\
+Уран & None & 0  \\
+Нептун & None & 0  \\
+\hline
+\end{tabular}
+%\specialcell{атмосферное \\  давление \\ от земного  } 
+
+
+\subsection{Орбитальные данные планет}
+\begin{tabular}{|p{2.5cm}|p{2.5cm}|p{2cm}|p{2.5cm}|p{2.5cm}|} \hline
+
+\label{table:questions1}
+name & ${ orbit_{excenter}}$ & ${orbit_{year}}$ & ${orbit_{speed}}$ & ${orbit_{perihelion}}$  \\
+\hline
+Меркурий & None & 0 & 0 & 0 \\
+Венера & None & 0 & 0 & 0  \\
+Земля & 0.017 & 1 год & 29.783 & 0.98329134 \\
+Марс & None & 0 & 0 & 0\\
+Юпитер & None & 0 & 0 & 0  \\
+Сатурн & None & 0 & 0 & 0  \\
+Уран & None & 0 & 0 & 0 \\
+Нептун & None & 0 & 0 & 0  \\
+\hline
+& & &  &  ${orbit_{aphelion}}$\\
+Меркурий &  &  & & 0 \\
+Венера &  & &  & 0  \\
+Земля &  &  &  & 1.01671388 \\
+Марс &  &  &  & 0\\
+Юпитер &  &  &  & 0  \\
+Сатурн &  &  &  & 0  \\
+Уран &  &  &  & 0 \\
+Нептун &  &  &  & 0  \\
+\hline
+\end{tabular}
+
+\subsection{Физические характеристики планет}
+\begin{tabular}{|p{2.5cm}|p{3cm}|p{2cm}|p{3.5cm}|p{1.5cm}|} \hline
+
+\label{table:questions1}
+name & ${ mass_{mantissa}}$ & ${mass_{exp}}$ & ${volume_{mantissa}}$ & ${volume_exp}$  \\
+\hline
+Меркурий & None & 0 & 0 & 0 \\
+Венера & None & 0 & 0 & 0  \\
+Земля &  5.9726 & 24 &  10.8321 & 11 \\
+Марс & None & 0 & 0 & 0\\
+Юпитер & None & 0 & 0 & 0  \\
+Сатурн & None & 0 & 0 & 0  \\
+Уран & None & 0 & 0 & 0 \\
+Нептун & None & 0 & 0 & 0  \\
+\hline
+&   &  \specialcell{${Pl_{radius}}$,\\ km} & \specialcell{area,\\ ${km^2}$} & tilt\\
+Меркурий &  & 0 & 0 & 0 \\
+Венера &  & 0 & 0 & 0  \\
+Земля &  & 6371 & {$5,10072*10^8$} & 23.44 \\
+Марс &  & 0 & 0 & 0\\
+Юпитер &  & 0 & 0 & 0  \\
+Сатурн & & 0 & 0 & 0  \\
+Уран &  & 0 & 0 & 0 \\
+Нептун &  & 0 & 0 & 0  \\
+\hline
+
+&  \specialcell{gravity, \\${m/c^2}$} & \specialcell{${space_{speed},\\ km/c^2}$} & {${sidereal_{period}}$,hr} & {temp,${{^\circ} C}$} \\ 
+Меркурий & 0 & 0 & 0 & 0 \\
+Венера & 0 & 0 & 0 & 0  \\
+Земля & 9.8 & 7.91 & 24 & -89~---56 \\
+Марс & 0 & 0 & 0 & 0\\
+Юпитер & 0 & 0 & 0 & 0  \\
+Сатурн & 0 & 0 & 0 & 0  \\
+Уран & 0 & 0 & 0 & 0 \\
+Нептун & 0 & 0 & 0 & 0  \\
+\hline
+&\multicolumn{4}{|c|}{atmo struct, per} \\ \hline
+Меркурий & \multicolumn{4}{|c|}{0}   \\ \hline
+Венера & \multicolumn{4}{|c|}{0}    \\ \hline
+Земля & \multicolumn{4}{|c|}{N = 78.08, ${O_2}$ = 20.95, ${H_2}$O vapor = 1, Ag = 0.93, C${O_2}$ = 0.04}   \\ \hline
+Марс & \multicolumn{4}{|c|}{0}  \\ \hline
+Юпитер & \multicolumn{4}{|c|}{0}    \\ \hline
+Сатурн & \multicolumn{4}{|c|}{0}    \\ \hline
+Уран & \multicolumn{4}{|c|}{0}   \\ \hline
+Нептун & \multicolumn{4}{|c|}{0}    \\ \hline
+\hline
+\end{tabular}
+%************************
+
+\end{document}
