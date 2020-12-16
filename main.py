@@ -52,11 +52,18 @@ class InfoObject(ImageObject):
     """Класс для кликабельных объектов Солнечной системы информации о них"""
     def __init__(self, info):
         self.info = info #Информация об объекте
+        self.name = info['name']
         self.info['type'] = "неизвестно"
         self.image = load_image(info['image'])
         self.x, self.y = 0, 0
         self.anchor = tk.CENTER
         self.canvas = None
+        self.radius = self.image.width() / 2
+    
+    def if_clicked(self, event):
+        mx, my = event.x, event.y #Позиция мыши
+        rel_mx, rel_my = mx - self.x, my - self.y
+        return (rel_mx * rel_mx + rel_my * rel_my <= self.radius * self.radius)
 
     def draw_on_canvas(self, canvas):
         self.canvas_image = canvas.create_image(self.x, self.y, anchor = self.anchor, image = self.image)
@@ -74,7 +81,10 @@ class Planet(InfoObject):
     def move(self):
         old_x, old_y = self.x, self.y
         self.x, self.y = self.orbit.get_current_position()
-        self.canvas.move(self.canvas_image, self.x - old_x, self.y - old_y)
+        dx, dy = self.x - old_x, self.y - old_y
+        self.canvas.move(self.canvas_image, dx, dy)
+        return 
+    
 
 planets = [
     {"name": 'Земля', "image": 'earth.png', "orbit": Orbit(200, 0.017, 350, 300, 0, 1),
@@ -85,11 +95,32 @@ planets = [
     }
 ]
 
+def update_info_frame():
+    pass #TODO
+
+def update_selection(event):
+    global planets, selected_planet
+    for p in planets:
+        if p.if_clicked(event):
+            selected_planet = p
+            return
+    selected_planet = None
+
 def update():
-    global root, planets, orbit_time
+    global root, planets, orbit_time, selected_planet_halo
     orbit_time += 1 / 60
     for p in planets:
         p.move()
+    if selected_planet is not None:
+        r = selected_planet.radius
+        x, y = selected_planet.x, selected_planet.y
+        if selected_planet_halo is not None:
+            canvas.delete(selected_planet_halo)
+        selected_planet_halo = canvas.create_oval(x - r, y - r, x + r, y + r, outline = "white", width = 2)
+    else:
+        if selected_planet_halo:
+            canvas.delete(selected_planet_halo)
+            selected_planet_halo = None
     root.after(int(1000/60), update)
 
 if __name__ == '__main__':
@@ -99,19 +130,20 @@ if __name__ == '__main__':
     canvas_frame = tk.Frame(root, borderwidth=1)
     canvas_frame.pack(fill="both", expand=True)
     canvas_frame.pack(side = 'right')
-    info_frame = tk.Frame(root, borderwidth=1, bg = "white")
+    info_frame = tk.Frame(root, borderwidth=1, bg = "white", width = 200)
     info_frame.pack(fill="both", expand=True)
     canvas_frame.pack(side = 'left')
     #Создаём сам Canvas
-    canvas = tk.Canvas(canvas_frame, width = ROOT_W - 150, height = ROOT_H)
+    canvas = tk.Canvas(canvas_frame, width = ROOT_W - 200, height = ROOT_H)
+    canvas.bind('<Button-1>', update_selection)
     canvas.pack(side = 'left')
-    test_label = tk.Label(info_frame, text = "тест", width = 150)
-    test_label.pack()
     #Рисуем фон
     bg = ImageObject('bg.png')
     bg.draw_on_canvas(canvas)
     #Конвертируем и расставляем планеты
     planets = [Planet(p) for p in planets]
+    selected_planet = None
+    selected_planet_halo = None
     for p in planets:
         p.draw_on_canvas(canvas)
         print(p.x, p.y)
