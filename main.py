@@ -157,7 +157,7 @@ def parse_json(name):
     with open("info/%s.json" % name, "r", encoding = 'utf-8') as read_file:
         return json.load(read_file)
 
-planets = ["mercury", "venus", "earth"]
+planets = ["mercury", "venus", "earth", "mars"]
 
 def update_info_frame(reset = False):
     global info_frame, selected_planet, info_image, info_text
