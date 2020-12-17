@@ -2,7 +2,7 @@ import tkinter as tk
 import math
 import json
 
-ORBIT_EARTH_SPEED = math.pi / 20
+ORBIT_EARTH_SPEED = math.pi / 30
 orbit_time = 0.0
 def load_image(name):
     """Загрузить изображение в память из папки img (png или gif)"""
@@ -146,17 +146,18 @@ class Planet(InfoObject):
 
 class Star(InfoObject):
     """Класс для Солнца"""
-    def __init__(self, info, x, y):
+    def __init__(self, info, x, y, radius):
         super().__init__(info)
         self.info['type'] = "звезда"
         self.x, self.y = x, y
+        self.radius = radius
 
 #Парсим информцию о планетах
 def parse_json(name):
     with open("info/%s.json" % name, "r", encoding = 'utf-8') as read_file:
         return json.load(read_file)
 
-planets = [parse_json("earth")]
+planets = ["mercury", "venus", "earth"]
 
 def update_info_frame(reset = False):
     global info_frame, selected_planet, info_image, info_text
@@ -229,10 +230,11 @@ if __name__ == '__main__':
     #Конвертируем и расставляем планеты
     planets_done = []
     for p in planets:
+        p = parse_json(p)
         p['orbit'] = Orbit(*p['orbit'])
         planets_done.append(Planet(p))
     planets = planets_done
-    planets_done.insert(0, Star(parse_json("sun"), 300, 300))
+    planets_done.insert(0, Star(parse_json("sun"), 300, 300, 117/2))
     selected_planet = None
     for p in planets:
         p.draw_on_canvas(canvas)
