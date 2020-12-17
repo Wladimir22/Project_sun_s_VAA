@@ -16,6 +16,47 @@ def load_image(name):
 ROOT_W = 800
 ROOT_H = 600
 
+INFO_TEXT_PLANET = """\
+{name} ({type})
+
+Эксцентристет орбиты: {orbit_excenter}
+Время оборота: {orbit_year}
+Орбитальная скорость: {orbit_speed} км/с
+Ср. растояние до Солнца: {orbit_size} а.е.
+
+Масса: {mass_mantissa} · 10{mass_exp} кг
+Радиус: {radius} км
+Объём: {volume_mantissa} · 10{volume_exp} кг
+Ср. плотность: {density} г/см³
+Наклон оси: {tilt} градусов
+Ускорение свободного падения: {gravity} м/с²
+Площадь поверхности: {area_mantissa} · 10{area_exp} м²
+Период вращения: {sidereal_period}
+Температура: от {temp[0]} К до {temp[2]} К
+Средняя температура: {temp[1]} К
+
+Космические скорости:
+Первая — {space_speed_1} км/с
+Вторая — {space_speed_2} км/с
+
+Состав атмосферы:
+"""
+
+INFO_TEXT_STAR = """\
+{name} ({type})
+
+Масса: {mass_mantissa} · 10{mass_exp} кг
+Радиус: {radius} км
+Объём: {volume_mantissa} · 10{volume_exp} кг
+Ср. плотность: {density} г/см³
+Сидерический период: {sidereal_period}
+Ускорение свободного падения: {gravity} м/с²
+Температура кроны: {temp[0]} К
+Температура ядра: {temp[1]} К
+
+Состав фотосферы:
+"""
+
 class Orbit():
     """Класс для орбиты планет"""
     def __init__(self, hw, e, x, y, td, speed):
@@ -94,7 +135,6 @@ class Planet(InfoObject):
         super().__init__(info)
         self.orbit = info['orbit']
         self.info['type'] = "планета"
-        #Загрузка изображения планеты
         self.x, self.y = self.orbit.get_current_position()
     
     def move(self):
@@ -102,7 +142,14 @@ class Planet(InfoObject):
         self.x, self.y = self.orbit.get_current_position()
         dx, dy = self.x - old_x, self.y - old_y
         self.canvas.move(self.canvas_image, dx, dy)
-        return 
+        return
+
+class Star(InfoObject):
+    """Класс для Солнца"""
+    def __init__(self, info, x, y):
+        super().__init__(info)
+        self.info['type'] = "звезда"
+        self.x, self.y = x, y
 
 #Парсим информцию о планетах
 def parse_json(name):
@@ -119,21 +166,20 @@ def update_info_frame(reset = False):
         if info_text is not None:
             info_text.destroy()
         info_image = tk.Label(info_frame, text = "Нажмите на планету, чтобы узнать о ней побольше", 
-            width = 196, wraplength = 194, bg = 'white')
+            width = 200, wraplength = 194, bg = 'white')
         info_image.pack(side = "top", fill = "both")
     else:
         info_image.destroy()
-        info_image = tk.Label(info_frame, image = selected_planet.image_big, width = 196)
-        info_text = """\
-{name}
-Тип: {type}
-
-Эксцентристет орбиты: {orbit_excenter}
-Время оборота: {orbit_year}
-Орбитальная скорость: {orbit_speed} км/с
-
-Масса: {mass_mantissa} · 10{mass_exp} кг
-""".format(**selected_planet.info)
+        if info_text is not None:
+            info_text.destroy()
+        info_image = tk.Label(info_frame, image = selected_planet.image_big,
+            width = 200, height = 160, bg = 'white')
+        if type(selected_planet) == Planet:
+            info_text = INFO_TEXT_PLANET.format(**selected_planet.info)
+        else:
+            info_text = INFO_TEXT_STAR.format(**selected_planet.info)
+        for comp in selected_planet.info['atmo']:
+            info_text += '%s: %s%%\n' % (comp, selected_planet.info['atmo'][comp])
         info_text = tk.Label(info_frame, text = info_text, wraplength = 194, bg = 'white')
         info_image.pack(side = "top", fill = "both")
         info_text.pack(side = "top", fill = "both")
@@ -152,7 +198,7 @@ def update_selection(event):
 def update():
     global root, planets, orbit_time
     orbit_time += 1 / 60
-    for p in planets:
+    for p in planets[1:]:
         p.move()
     if selected_planet is not None:
         r = selected_planet.radius
@@ -186,6 +232,7 @@ if __name__ == '__main__':
         p['orbit'] = Orbit(*p['orbit'])
         planets_done.append(Planet(p))
     planets = planets_done
+    planets_done.insert(0, Star(parse_json("sun"), 300, 300))
     selected_planet = None
     for p in planets:
         p.draw_on_canvas(canvas)
