@@ -2,7 +2,7 @@
     "name": "Марс",
     "image": "mars.png",
     "image_big": "mars_big.png",
-    "orbit": [135, 0.0933941, 300, 300, 0, 1.882192],
+    "orbit": [135, 0.0933941, 300, 300, 0],
     "orbit_excenter": 0.093394,
     "orbit_year": "687 суток",
     "orbit_speed": 29.783,
