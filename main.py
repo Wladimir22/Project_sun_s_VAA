@@ -48,7 +48,7 @@ INFO_TEXT_STAR = """\
 
 Масса: {mass_mantissa} · 10{mass_exp} кг
 Радиус: {radius} км
-Объём: {volume_mantissa} · 10{volume_exp} кг
+Объём: {volume_mantissa} · 10{volume_exp} м³
 Ср. плотность: {density} г/см³
 Сидерический период: {sidereal_period}
 Ускорение свободного падения: {gravity} м/с²
