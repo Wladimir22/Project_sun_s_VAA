@@ -1,8 +1,9 @@
 {
-    "name": "Юпитер",
-    "image": "jupiter.png",
-    "image_big": "jupiter_big.png",
-    "orbit": [175, 0.048775, 300, 300, 0],
+    "name": "Сатурн",
+    "image": "saturn.png",
+    "image_big": "saturn_big.png",
+    "image_radius": 20,
+    "orbit": [220, 0.048775, 300, 300, 0],
     "orbit_excenter": 0.048775,
     "orbit_year": "11.8 лет",
     "orbit_speed": 29.783,
