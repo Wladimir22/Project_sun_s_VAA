@@ -2,7 +2,7 @@ import tkinter as tk
 import math
 import json
 
-ORBIT_SPEED_DELTA = (math.pi / 60) / 3 
+ORBIT_SPEED_DELTA = (math.pi / 60) / 4
 ORBIT_EARTH_HH = 105
 orbit_time = 0.0
 def load_image(name):
@@ -15,7 +15,7 @@ def load_image(name):
         exit(-1)
 #Размеры экрана
 ROOT_W = 900
-ROOT_H = 600
+ROOT_H = 630
 
 INFO_TEXT_PLANET = """\
 {name} ({type})
