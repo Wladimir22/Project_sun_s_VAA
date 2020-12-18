@@ -2,7 +2,7 @@
     "name": "Меркурий",
     "image": "mercury.png",
     "image_big": "mercury_big.png",
-    "orbit": [90, 0.20563593, 300, 300, 0, 0.2411],
+    "orbit": [40, 0.20563593, 300, 300, 0],
     "orbit_excenter": 0.20564,
     "orbit_year": "88 дней",
     "orbit_speed": 29.783,

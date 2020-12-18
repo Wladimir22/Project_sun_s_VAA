@@ -2,7 +2,8 @@ import tkinter as tk
 import math
 import json
 
-ORBIT_EARTH_SPEED = math.pi / 30
+ORBIT_SPEED_DELTA = (math.pi / 60) / 3 
+ORBIT_EARTH_HH = 105
 orbit_time = 0.0
 def load_image(name):
     """Загрузить изображение в память из папки img (png или gif)"""
@@ -13,7 +14,7 @@ def load_image(name):
         print('Ошибка загрузки изображения {0}:\n{1}'.format(name, e))
         exit(-1)
 #Размеры экрана
-ROOT_W = 800
+ROOT_W = 900
 ROOT_H = 600
 
 INFO_TEXT_PLANET = """\
@@ -47,7 +48,7 @@ INFO_TEXT_STAR = """\
 
 Масса: {mass_mantissa} · 10{mass_exp} кг
 Радиус: {radius} км
-Объём: {volume_mantissa} · 10{volume_exp} кг
+Объём: {volume_mantissa} · 10{volume_exp} м³
 Ср. плотность: {density} г/см³
 Сидерический период: {sidereal_period}
 Ускорение свободного падения: {gravity} м/с²
@@ -71,7 +72,7 @@ class Orbit():
     
     def get_current_position(self):
         """Получить текущую позицию на орбите"""
-        t = self.td + orbit_time * ORBIT_EARTH_SPEED / self.speed
+        t = self.td + orbit_time * ORBIT_SPEED_DELTA * self.speed
         x = self.x + self.hw * math.cos(t)
         y = self.y + self.hh * math.sin(t)
         return x, y
@@ -101,7 +102,7 @@ class InfoObject(ImageObject):
         self.x, self.y = 0, 0
         self.anchor = tk.CENTER
         self.canvas = None
-        self.radius = self.image.width() / 2
+        self.radius = info.get('image_radius') or (self.image.width() / 2)
         self.convert_exps()
     
     def convert_exps(self):
@@ -157,7 +158,7 @@ def parse_json(name):
     with open("info/%s.json" % name, "r", encoding = 'utf-8') as read_file:
         return json.load(read_file)
 
-planets = ["mercury", "venus", "earth", "mars"]
+planets = ["mercury", "venus", "earth", "mars", "jupiter", "saturn", "uranus", "neptune"]
 
 def update_info_frame(reset = False):
     global info_frame, selected_planet, info_image, info_text
@@ -231,13 +232,14 @@ if __name__ == '__main__':
     planets_done = []
     for p in planets:
         p = parse_json(p)
-        p['orbit'] = Orbit(*p['orbit'])
+        orbit = p['orbit']
+        orbit.append(p['orbit_speed'] ** 2 / orbit[0]) #Скорость вращения теперь высчитывается из характеристик планет
+        p['orbit'] = Orbit(*orbit)
         planets_done.append(Planet(p))
     planets = planets_done
-    planets_done.insert(0, Star(parse_json("sun"), 300, 300, 117/2))
+    planets_done.insert(0, Star(parse_json("sun"), 300, 300, 30))
     selected_planet = None
     for p in planets:
         p.draw_on_canvas(canvas)
-        print(p.x, p.y)
     root.after(int(1000/60), update)
     root.mainloop()
