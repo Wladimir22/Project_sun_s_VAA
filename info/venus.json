@@ -2,7 +2,7 @@
     "name": "Венера",
     "image": "venus.png",
     "image_big": "venus_big.png",
-    "orbit": [120, 0.0068, 300, 300, 0, 0.61562],
+    "orbit": [70, 0.0068, 300, 300, 0, 0.61562],
     "orbit_excenter": 0.0068,
     "orbit_year": "222.7 суток",
     "orbit_speed": 29.783,

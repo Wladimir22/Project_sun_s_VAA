@@ -157,7 +157,7 @@ def parse_json(name):
     with open("info/%s.json" % name, "r", encoding = 'utf-8') as read_file:
         return json.load(read_file)
 
-planets = ["mercury", "venus", "earth", "mars"]
+planets = ["mercury", "venus", "earth", "mars", "jupiter"]
 
 def update_info_frame(reset = False):
     global info_frame, selected_planet, info_image, info_text
@@ -234,7 +234,7 @@ if __name__ == '__main__':
         p['orbit'] = Orbit(*p['orbit'])
         planets_done.append(Planet(p))
     planets = planets_done
-    planets_done.insert(0, Star(parse_json("sun"), 300, 300, 117/2))
+    planets_done.insert(0, Star(parse_json("sun"), 300, 300, 30))
     selected_planet = None
     for p in planets:
         p.draw_on_canvas(canvas)
