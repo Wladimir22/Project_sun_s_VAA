@@ -1,0 +1,30 @@
+{
+    "name": "Нептун",
+    "image": "neptune.png",
+    "image_big": "neptune_big.png",
+    "orbit": [340, 0.048775, 300, 300, 0],
+    "orbit_excenter": 0.048775,
+    "orbit_year": "11.8 лет",
+    "orbit_speed": 29.783,
+    "orbit_size": 1,
+    "mass_mantissa": 5.9726,
+    "mass_exp": 24,
+    "volume_mantissa": 10.8321,
+    "volume_exp": 11, 
+    "density": 5.5153,
+    "radius": 6371,
+    "gravity": 9.8,
+    "area_mantissa": 5.1,
+    "area_exp": 8,
+    "tilt": 23.44,
+    "space_speed_1": 7.91,
+    "space_speed_2": 11.186,
+    "sidereal_period": "23ч. 56м. 4с.",
+    "temp": [184, 287.2, 329.9],
+    "atmo": {
+        "Азот": 78.08,
+        "Кислород": 20.95,
+        "Водяной пар": 1,
+        "Аргон": 0.93
+    }
+}
