@@ -2,7 +2,7 @@
     "name": "Юпитер",
     "image": "jupiter.png",
     "image_big": "jupiter_big.png",
-    "orbit": [175, 0.048775, 300, 300, 0],
+    "orbit": [190, 0.048775, 300, 300, 0],
     "orbit_excenter": 0.048775,
     "orbit_year": "11.8 лет",
     "orbit_speed": 29.783,

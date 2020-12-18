@@ -3,7 +3,7 @@
     "image": "saturn.png",
     "image_big": "saturn_big.png",
     "image_radius": 20,
-    "orbit": [220, 0.048775, 300, 300, 0],
+    "orbit": [245, 0.048775, 300, 300, 0],
     "orbit_excenter": 0.048775,
     "orbit_year": "11.8 лет",
     "orbit_speed": 29.783,

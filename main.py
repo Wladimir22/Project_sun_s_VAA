@@ -14,7 +14,7 @@ def load_image(name):
         print('Ошибка загрузки изображения {0}:\n{1}'.format(name, e))
         exit(-1)
 #Размеры экрана
-ROOT_W = 800
+ROOT_W = 900
 ROOT_H = 600
 
 INFO_TEXT_PLANET = """\
@@ -241,6 +241,5 @@ if __name__ == '__main__':
     selected_planet = None
     for p in planets:
         p.draw_on_canvas(canvas)
-        print(p.x, p.y)
     root.after(int(1000/60), update)
     root.mainloop()
