@@ -1,0 +1,20 @@
+{
+    "name": "Солнце",
+    "image": "sun.png",
+    "image_big": "sun_big.png",
+    "mass_mantissa": 1.9885,
+    "mass_exp": 30,
+    "volume_mantissa": 1.40927,
+    "volume_exp": 27, 
+    "density": 1.409,
+    "radius": 695510,
+    "gravity": 274,
+    "sidereal_period": "25 дней",
+    "temp": [1500000, 15700000],
+    "atmo": {
+        "Водород": 74.46,
+        "Гелий": 24.85,
+        "Кислород": 0.77,
+        "Углерод": 0.29
+    }
+}
